@@ -19,6 +19,15 @@ const menuTemplate = [
       { label: "New Todo" },
       {
         label: "Quit",
+        //accelerator: "Ctrl+Q", // allows u add 'Hot-keys' functionality
+        // accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Ctrl+Q'
+        accelerator: (() => {
+          if (process.platform === "darwin") {
+            return "Command+Q";
+          } else {
+            return "Ctrl+Q";
+          }
+        })(),
         click() {
           app.quit();
         },
