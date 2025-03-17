@@ -3,6 +3,7 @@ const electron = require("electron");
 const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
+let addWindow;
 app.on("ready", () => {
   mainWindow = new BrowserWindow({});
   mainWindow.loadURL(`file://${__dirname}/main.html`);
@@ -11,12 +12,26 @@ app.on("ready", () => {
   Menu.setApplicationMenu(mainManu);
 });
 
+function createAddWindow() {
+  addWindow = new BrowserWindow({
+    width: 300,
+    height: 200,
+    title: "Add New Todo",
+  });
+  addWindow.loadURL(`file://${__dirname}/add.html`);
+}
+
 const menuTemplate = [
   // represent menu property
   {
     label: "File",
     submenu: [
-      { label: "New Todo" },
+      {
+        label: "New Todo",
+        click() {
+          createAddWindow();
+        },
+      },
       {
         label: "Quit",
         //accelerator: "Ctrl+Q", // allows u add 'Hot-keys' functionality
