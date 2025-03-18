@@ -7,6 +7,9 @@ let addWindow;
 app.on("ready", () => {
   mainWindow = new BrowserWindow({});
   mainWindow.loadURL(`file://${__dirname}/main.html`);
+  mainWindow.on("closed", () => {
+    app.quit();
+  });
 
   const mainManu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainManu);
@@ -53,4 +56,20 @@ const menuTemplate = [
 
 if (process.platform === "darwin") {
   menuTemplate.unshift({});
+}
+
+if (process.env.NODE_ENV !== "production") {
+  menuTemplate.push({
+    label: "View",
+    submenu: [
+      {
+        label: "Toggle Developer Tools",
+        accelerator:
+          process.platform === "darwin" ? "Command+Alt+I" : "Ctrl+Shift+I",
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        },
+      },
+    ],
+  });
 }
