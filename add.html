@@ -9,8 +9,16 @@
   </form>
 
   <script>
+    const electron = require("electron");
+    const { ipcRenderer } = electron;
+
     document.querySelector("form").addEventListener("submit", (event) => {
       event.preventDefault();
+
+      // extracting the input value
+      //document.querySelector("input").value;
+      const { value } = document.querySelector("input");
+      ipcRenderer.send("todo:add", value);
     });
   </script>
 </body>
