@@ -5,7 +5,12 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 let mainWindow;
 let addWindow;
 app.on("ready", () => {
-  mainWindow = new BrowserWindow({});
+  mainWindow = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true, // <--- This enables `require`
+      contextIsolation: false, // <--- Also required for `nodeIntegration` to work
+    },
+  });
   mainWindow.loadURL(`file://${__dirname}/main.html`);
   mainWindow.on("closed", () => {
     app.quit();
@@ -20,6 +25,10 @@ function createAddWindow() {
     width: 300,
     height: 200,
     title: "Add New Todo",
+    webPreferences: {
+      nodeIntegration: true, // <--- This enables `require`
+      contextIsolation: false, // <--- Also required for `nodeIntegration` to work
+    },
   });
   addWindow.loadURL(`file://${__dirname}/add.html`);
   // whenever addWindow is closed, point it to null, reclaiming memory it used (garbage collection in JS)
